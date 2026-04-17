@@ -1,0 +1,48 @@
+site_name: Poopi Septic System
+site_description: Septic monitoring appliance documentation
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+
+  - System:
+      - Overview: system_overview.md
+      - Data Flow: data_flow.md
+
+  - Services:
+      - GPIO Heartbeat: services/gpio-heartbeat.md
+      - GPIO Change: services/chkgpio.md
+      - Level Sensor: services/level-gem.md
+
+  - Interfaces:
+      - MQTT Topics: interfaces/mqtt_topics.md
+      - File Outputs: interfaces/file_outputs.md
+      - GPIO Map: interfaces/gpio_map.md
+
+  - Node-RED:
+      - Overview: nodered/overview.md
+      - Digital State: nodered/digital_state.md
+      - Tank Level: nodered/tank_level.md
+      - Watchdog: nodered/watchdog.md
+      - MQTT Routing: nodered/mqtt_routing.md
+
+  - Diagrams:
+      - System Diagram: diagrams/system.md
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.details
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
