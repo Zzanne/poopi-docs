@@ -9,3 +9,5 @@ site/
 # OS / editor
 .DS_Store
 *.swp
+
+workflow.md
