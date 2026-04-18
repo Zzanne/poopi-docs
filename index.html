@@ -256,10 +256,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#status" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status
+        Overview
       
     </span>
   </a>
@@ -267,10 +267,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-step" class="md-nav__link">
+  <a href="#what-this-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Step
+        What This Does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
       
     </span>
   </a>
@@ -1009,10 +1042,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#status" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status
+        Overview
       
     </span>
   </a>
@@ -1020,10 +1053,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-step" class="md-nav__link">
+  <a href="#what-this-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Step
+        What This Does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
       
     </span>
   </a>
@@ -1048,10 +1114,36 @@
 
 
 <h1 id="poopi-septic-monitoring-system">Poopi Septic Monitoring System</h1>
+<h2 id="overview">Overview</h2>
+<p>Raspberry Pi–based septic monitoring system using GPIO inputs and Node-RED for state processing.</p>
+<hr />
+<h2 id="what-this-does">What This Does</h2>
+<ul>
+<li>Reads float switches and pump states</li>
+<li>Normalizes and interprets signals in Node-RED</li>
+<li>Publishes system state locally and remotely</li>
+</ul>
+<hr />
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li>GPIO state is captured and written to <code>/run/gpio_snapshot.json</code></li>
+<li>Node-RED processes the data</li>
+<li>System state is encoded as a bitmask</li>
+<li>Data is published to MQTT, dashboards, and external services</li>
+</ol>
+<hr />
+<h2 id="documentation">Documentation</h2>
+<p>Use the navigation menu to explore:</p>
+<ul>
+<li><strong>System</strong> → architecture and data flow  </li>
+<li><strong>Services</strong> → scripts and systemd services  </li>
+<li><strong>Node-RED</strong> → processing logic and state handling  </li>
+<li><strong>Interfaces</strong> → GPIO, MQTT, and file structures  </li>
+<li><strong>Diagrams</strong> → visual system layout  </li>
+</ul>
+<hr />
 <h2 id="status">Status</h2>
-<p>MkDocs is working.</p>
-<h2 id="next-step">Next Step</h2>
-<p>Add system documentation.</p>
+<p>System is operational and documentation is in progress.</p>
 
 
 
