@@ -475,6 +475,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -489,10 +506,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-format" class="md-nav__link">
+  <a href="#processing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Format
+        Processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outputs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-primary-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File (Primary Output)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-chkgpioservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to chkgpio.service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1052,6 +1130,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1066,10 +1161,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-format" class="md-nav__link">
+  <a href="#processing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Format
+        Processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outputs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-primary-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File (Primary Output)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-chkgpioservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to chkgpio.service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1095,24 +1251,119 @@
 
 <h1 id="gpio-heartbeatservice">gpio-heartbeat.service</h1>
 <h2 id="purpose">Purpose</h2>
-<p>Generate periodic snapshot of all GPIO states.</p>
+<p>Generate a periodic snapshot of all GPIO states as a single JSON object for downstream consumers that require full-state visibility instead of edge-triggered events.</p>
+<hr />
 <h2 id="execution">Execution</h2>
 <ul>
-<li>Script: /opt/poopi/app/gpio_heartbeat.sh</li>
-<li>Interval: 5 seconds</li>
-<li>Output: /run/gpio_snapshot.json</li>
+<li><strong>Script</strong>: <code>/opt/poopi/app/gpio_heartbeat.sh</code></li>
+<li><strong>Type</strong>: Continuous loop (systemd-managed)</li>
+<li><strong>Interval</strong>: 5 seconds</li>
 </ul>
+<h3 id="behavior">Behavior</h3>
+<ul>
+<li>Captures <strong>full GPIO state</strong> at a fixed interval</li>
+<li>Writes snapshot atomically (temp file → rename)</li>
+<li>Independent of state changes (runs regardless of activity)</li>
+</ul>
+<hr />
 <h2 id="inputs">Inputs</h2>
 <ul>
-<li>GPIO pins: 17, 22, 5, 27, 26, 20, 19, 21</li>
+<li><strong>GPIO pins (BCM)</strong>:</li>
+<li>17</li>
+<li>22</li>
+<li>5</li>
+<li>27</li>
+<li>26</li>
+<li>20</li>
+<li>19</li>
+<li>
+<p>21</p>
+</li>
+<li>
+<p><strong>Read method</strong>:</p>
+</li>
+<li><code>pinctrl get &lt;pin&gt;</code></li>
+<li>Extracts <code>hi</code> / <code>lo</code> and converts to:<ul>
+<li><code>1</code> = high</li>
+<li><code>0</code> = low</li>
 </ul>
-<h2 id="output-format">Output Format</h2>
-<p>```json
-{
-  "ts": "ISO8601",
-  "gpio17": 0,
-  ...
-}</p>
+</li>
+</ul>
+<hr />
+<h2 id="processing">Processing</h2>
+<ul>
+<li>Poll all pins every 5 seconds</li>
+<li>Normalize values to binary (0/1)</li>
+<li>Build a single JSON object containing:</li>
+<li>Timestamp (UTC)</li>
+<li>Current state of all pins</li>
+<li>Write snapshot using atomic file replacement:</li>
+<li>Write to temp file</li>
+<li>Move to final path</li>
+</ul>
+<hr />
+<h2 id="outputs">Outputs</h2>
+<h3 id="file-primary-output">File (Primary Output)</h3>
+<ul>
+<li>
+<p><strong>Path</strong>:
+  <div class="highlight"><pre><span></span><code>/run/gpio_snapshot.json
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Write method</strong>:</p>
+</li>
+<li>Atomic (<code>.tmp</code> → rename)</li>
+<li>
+<p>Prevents partial reads by consumers</p>
+</li>
+<li>
+<p><strong>Format</strong>:
+  <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ISO8601&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio17&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio22&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio5&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio27&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio26&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio20&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio19&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;gpio21&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Timestamp format</strong>:</p>
+</li>
+<li>UTC (<code>YYYY-MM-DDTHH:MM:SSZ</code>)</li>
+</ul>
+<hr />
+<h2 id="timing-characteristics">Timing Characteristics</h2>
+<ul>
+<li>Fixed interval: every 5 seconds</li>
+<li>Not event-driven</li>
+<li>Provides <strong>state continuity</strong> even if no changes occur</li>
+<li>Suitable for:</li>
+<li>Polling systems</li>
+<li>Recovery after missed events</li>
+<li>Cross-checking event-based logs</li>
+</ul>
+<hr />
+<h2 id="relationship-to-chkgpioservice">Relationship to chkgpio.service</h2>
+<ul>
+<li><strong>chkgpio.service</strong> → event-based (edge detection)</li>
+<li><strong>gpio-heartbeat.service</strong> → state-based (full snapshot)</li>
+</ul>
+<p>Together they provide:
+- High-resolution event tracking
+- Periodic full-state verification</p>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>No MQTT output; file-based only</li>
+<li>Consumers must read <code>/run/gpio_snapshot.json</code></li>
+<li><code>/run</code> is typically tmpfs (non-persistent across reboot)</li>
+</ul>
 
 
 

@@ -503,6 +503,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -540,10 +557,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mqtt" class="md-nav__link">
+  <a href="#mqtt-primary-data-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MQTT
+        MQTT (Primary Data Path)
       
     </span>
   </a>
@@ -551,10 +568,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#file" class="md-nav__link">
+  <a href="#mqtt-status-topic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        File
+        MQTT (Status Topic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-logging-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Logging (Local)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stdout-journald" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stdout (journald)
       
     </span>
   </a>
@@ -567,10 +606,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#status-topic" class="md-nav__link">
+  <a href="#timing-characteristics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status Topic
+        Timing Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1102,6 +1152,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1139,10 +1206,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mqtt" class="md-nav__link">
+  <a href="#mqtt-primary-data-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MQTT
+        MQTT (Primary Data Path)
       
     </span>
   </a>
@@ -1150,10 +1217,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#file" class="md-nav__link">
+  <a href="#mqtt-status-topic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        File
+        MQTT (Status Topic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-logging-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Logging (Local)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stdout-journald" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stdout (journald)
       
     </span>
   </a>
@@ -1166,10 +1255,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#status-topic" class="md-nav__link">
+  <a href="#timing-characteristics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status Topic
+        Timing Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1195,36 +1295,147 @@
 
 <h1 id="chkgpioservice">chkgpio.service</h1>
 <h2 id="purpose">Purpose</h2>
-<p>Detect GPIO state changes and publish events via MQTT.</p>
+<p>Detect GPIO state changes and publish events via MQTT while maintaining a durable local event log.</p>
+<hr />
 <h2 id="execution">Execution</h2>
 <ul>
-<li>Script: /opt/poopi/app/chkgpio.py</li>
-<li>Poll interval: 50 ms</li>
+<li><strong>Script</strong>: <code>/opt/poopi/app/chkgpio.py</code></li>
+<li><strong>Type</strong>: Continuous loop (systemd-managed)</li>
+<li><strong>Poll interval</strong>: 50 ms (~20 scans/sec)</li>
 </ul>
+<h3 id="behavior">Behavior</h3>
+<ul>
+<li>Monitors GPIO continuously</li>
+<li><strong>Triggers only on state change</strong> (edge-based, not periodic)</li>
+<li>Publishes <strong>online status on startup</strong></li>
+<li>Publishes <strong>offline status via MQTT Last Will</strong> if service stops unexpectedly</li>
+</ul>
+<hr />
 <h2 id="inputs">Inputs</h2>
 <ul>
-<li>GPIO pins (BCM)</li>
+<li><strong>GPIO pins (BCM mode)</strong>:</li>
+<li>17 → surge-pump-cycle</li>
+<li>22 → surge-ops-float</li>
+<li>5  → surge-override-float</li>
+<li>27 → surge-hwa</li>
+<li>26 → effluent-pump-cycle</li>
+<li>20 → effluent-ops-float</li>
+<li>19 → effluent-override-float</li>
+<li>21 → effluent-hwa</li>
 </ul>
+<hr />
 <h2 id="processing">Processing</h2>
 <ul>
-<li>Compare against last state</li>
-<li>Trigger on change only</li>
-<li>Apply inversion where configured</li>
+<li>Compare current GPIO state against last known state</li>
+<li>Trigger event only on change</li>
+<li>Apply <strong>logical inversion</strong> for configured pins</li>
+<li>Convert to normalized binary output (0/1)</li>
 </ul>
+<hr />
 <h2 id="outputs">Outputs</h2>
-<h3 id="mqtt">MQTT</h3>
+<h3 id="mqtt-primary-data-path">MQTT (Primary Data Path)</h3>
 <ul>
-<li>Topic: zmcnair/feeds/bkh.<label></li>
-<li>Payload: 0 or 1</li>
+<li><strong>Broker</strong>: <code>io.adafruit.com:1883</code></li>
+<li>
+<p><strong>Topic format</strong>:
+  <div class="highlight"><pre><span></span><code>zmcnair/feeds/bkh.&lt;label&gt;
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Example</strong>:
+  <div class="highlight"><pre><span></span><code>zmcnair/feeds/bkh.surge-ops-float
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Payload</strong>:
+  <div class="highlight"><pre><span></span><code>0 or 1
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Publish behavior</strong>:</p>
+</li>
+<li>Event-driven (on change only)</li>
+<li>Non-blocking (background MQTT loop)</li>
 </ul>
-<h3 id="file">File</h3>
+<hr />
+<h3 id="mqtt-status-topic">MQTT (Status Topic)</h3>
 <ul>
-<li>/opt/poopi/app/gpio_events.log</li>
-<li>Format: timestamp,pin,label,state</li>
+<li>
+<p><strong>Topic</strong>:
+  <div class="highlight"><pre><span></span><code>zmcnair/feeds/bkh.chkgpio-status
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Payloads</strong>:</p>
+</li>
+<li><code>1</code> → running</li>
+<li>
+<p><code>0</code> → offline (Last Will)</p>
+</li>
+<li>
+<p><strong>Retained</strong>: Yes</p>
+</li>
 </ul>
-<h2 id="status-topic">Status Topic</h2>
+<hr />
+<h3 id="file-logging-local">File Logging (Local)</h3>
 <ul>
-<li>zmcnair/feeds/bkh.chkgpio-status</li>
+<li>
+<p><strong>Path</strong>:
+  <div class="highlight"><pre><span></span><code>/opt/poopi/app/gpio_events.log
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Format</strong>:
+  <div class="highlight"><pre><span></span><code>timestamp,pin,label,state
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Example</strong>:
+  <div class="highlight"><pre><span></span><code>2026-04-20T15:02:11.123456+00:00,22,surge-ops-float,1
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Behavior</strong>:</p>
+</li>
+<li>Append-only</li>
+<li>
+<p>Immediate flush + fsync (write-through, no buffering loss)</p>
+</li>
+<li>
+<p><strong>Startup entry</strong>:
+  <div class="highlight"><pre><span></span><code>timestamp,SYSTEM,chkgpio_start,1
+</code></pre></div></p>
+</li>
+</ul>
+<hr />
+<h3 id="stdout-journald">Stdout (journald)</h3>
+<ul>
+<li>
+<p>Mirrors each event line:
+  <div class="highlight"><pre><span></span><code>timestamp,pin,label,state
+</code></pre></div></p>
+</li>
+<li>
+<p>View:
+  <div class="highlight"><pre><span></span><code>journalctl -u chkgpio.service
+</code></pre></div></p>
+</li>
+</ul>
+<hr />
+<h2 id="timing-characteristics">Timing Characteristics</h2>
+<ul>
+<li>~50 ms detection resolution</li>
+<li>No periodic heartbeat per signal</li>
+<li>Output occurs only on transitions</li>
+<li>Suitable for precise event sequencing (float changes, pump cycles)</li>
+</ul>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Acts as the <strong>primary event source</strong> for downstream systems (MQTT → processing → Grafana)</li>
+<li>Downstream consumers must handle:</li>
+<li>State persistence</li>
+<li>Missed events if disconnected</li>
 </ul>
 
 
